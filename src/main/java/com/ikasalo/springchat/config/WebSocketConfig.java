@@ -14,7 +14,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         //tu se klijenti spajaju
         //enable SockJs je za one koji nemaju browser support za ws
-        registry.addEndpoint("/ws").withSockJS();
+        registry.addEndpoint("/ws")
+                //.withSockJS();
+        ;
     }
 
     @Override

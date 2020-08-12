@@ -1,6 +1,7 @@
 package com.ikasalo.springchat.controller;
 
 import com.ikasalo.springchat.model.ChatMessage;
+import com.ikasalo.springchat.model.Obavijest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -18,8 +19,9 @@ public class WebSocketEventListener {
     private SimpMessageSendingOperations operations;
 
     @EventListener
-    public void conenct(SessionConnectedEvent event) {
-        log.info("Connected" + event.getTimestamp());
+    public void connect(SessionConnectedEvent event) {
+
+        log.info("Connected {}, user: {}", event.getSource(), event.getUser().getName());
     }
 
     @EventListener
@@ -30,9 +32,13 @@ public class WebSocketEventListener {
         if (username != null) {
             log.info("Disconnected");
 
-            ChatMessage message = new ChatMessage();
+          /*  ChatMessage message = new ChatMessage();
             message.setType(ChatMessage.MessageType.LEAVE);
-            message.setSender(username);
+            message.setSender(username);*/
+
+            Obavijest message= new Obavijest();
+            message.setOpis(ChatMessage.MessageType.LEAVE.name());
+
 
             operations.convertAndSend("/topic/public", message);
         }
